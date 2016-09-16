@@ -6,12 +6,18 @@ import com.dt.physics.common.Position;
 
 public class SimObj {
 
+  private static final AtomicInteger COUNTER = new AtomicInteger(0);
+  private int id = COUNTER.getAndIncrement();
   private Position position;
   private AtomicInteger age = new AtomicInteger(0);
   private double speed = 0.0d;
 
   public SimObj(Position position) {
     this.position = position;
+  }
+
+  public int getId() {
+    return id;
   }
 
   public int getAge() {
