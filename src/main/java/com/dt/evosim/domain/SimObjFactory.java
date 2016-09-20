@@ -16,7 +16,7 @@ public class SimObjFactory {
   public SimObj randomObject() {
     Position pos = getRandomPosition();
     Map<String, Double> myProperties = createRandomFields(1);
-    SimObj simObj = new SimObj(myProperties, pos);
+    SimObj simObj = new SimObj(0, myProperties, pos);
     return simObj;
   }
 

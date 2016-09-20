@@ -7,16 +7,11 @@ public class SimObjPrinter {
   private boolean withPosition;
   private boolean withMyProperties;
 
-  public SimObjPrinter reset() {
-    this.withPosition = false;
-    this.withMyProperties = false;
-    return this;
-  }
-
   public SimObjPrinter withPosition() {
     this.withPosition = true;
     return this;
   }
+
   public SimObjPrinter withMyProperties() {
     this.withMyProperties = true;
     return this;
@@ -41,11 +36,9 @@ public class SimObjPrinter {
           sb.append(myProperties.get(key));
         }
       }
-
     } else {
       sb.append("<null object>");
     }
     return sb.toString();
   }
-
 }

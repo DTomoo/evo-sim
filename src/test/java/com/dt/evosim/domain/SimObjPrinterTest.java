@@ -22,7 +22,7 @@ public class SimObjPrinterTest {
   }
 
   private static final Position POSITION = new Position(1, 2);
-  private static final SimObj SIM_OBJ = new SimObj(PROP, POSITION);
+  private static final SimObj SIM_OBJ = new SimObj(0, PROP, POSITION);
 
   @Before
   public void setUp() {}

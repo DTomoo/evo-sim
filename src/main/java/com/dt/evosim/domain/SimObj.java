@@ -9,24 +9,26 @@ import com.dt.physics.common.Position;
 
 public class SimObj {
 
-  private static final AtomicInteger COUNTER = new AtomicInteger(0);
   // simple properties
-  private int id = COUNTER.getAndIncrement();
+  private int id;
   private Position position;
   private AtomicInteger age = new AtomicInteger(0);
   private double speed = 0.0d;
   // weighted properties
-  private Map<String, Double> myProperties = new HashMap<String, Double>();
+  private Map<String, Double> myProperties;
   private Map<String, Double> otherPropertyWeights = new HashMap<String, Double>();
 
-  public SimObj(Map<String, Double> myProperties) {
-    this.myProperties = myProperties;
-    this.position = new Position(0, 0);
+  public SimObj(int id) {
+    this(id, new HashMap<String, Double>(), new Position(0, 0));
   }
 
-  public SimObj(Map<String, Double> myProperties, Position position) {
-    this.myProperties = myProperties;
-    this.position = position;
+  public SimObj(int id, Map<String, Double> myProperties) {
+    this(id, myProperties, new Position(0, 0));
+  }
+
+  public SimObj(int id, Map<String, Double> myProperties, Position position) {
+    this.myProperties = myProperties == null ? new HashMap<String, Double>() : myProperties;
+    this.position = position == null ? new Position(0, 0) : position;
   }
 
   public Double getMyValue(String propertyName) {
