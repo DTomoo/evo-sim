@@ -13,10 +13,10 @@ public class SimObjFactory {
   //
   private Random rnd = new Random();
 
-  public SimObj randomObject() {
+  public SimObj randomObject(int id) {
     Position pos = getRandomPosition();
     Map<String, Double> myProperties = createRandomFields(1);
-    SimObj simObj = new SimObj(0, myProperties, pos);
+    SimObj simObj = new SimObj(id, myProperties, pos);
     return simObj;
   }
 

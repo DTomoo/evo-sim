@@ -17,7 +17,7 @@ public class SimObjFactoryTest {
   public void testCreation() {
     // GIVEN
     // WHEN
-    SimObj simObj = simObjFactory.randomObject();
+    SimObj simObj = simObjFactory.randomObject(0);
     // THEN
     Assert.assertNotNull(simObj);
     Assert.assertEquals(0, simObj.getAge());
@@ -29,8 +29,8 @@ public class SimObjFactoryTest {
   public void testRandomness() {
     // GIVEN
     // WHEN
-    SimObj simObj1 = simObjFactory.randomObject();
-    SimObj simObj2 = simObjFactory.randomObject();
+    SimObj simObj1 = simObjFactory.randomObject(0);
+    SimObj simObj2 = simObjFactory.randomObject(0);
     // THEN
     Assert.assertNotSame(simObj1, simObj2);
     Assert.assertNotEquals(simObj1.getPosition(), simObj2.getPosition());

@@ -14,6 +14,8 @@ public class SimObj {
   private Position position;
   private AtomicInteger age = new AtomicInteger(0);
   private double speed = 0.0d;
+  private int energy = 100;
+  private boolean living = true;
   // weighted properties
   private Map<String, Double> myProperties;
   private Map<String, Double> otherPropertyWeights = new HashMap<String, Double>();
@@ -27,6 +29,7 @@ public class SimObj {
   }
 
   public SimObj(int id, Map<String, Double> myProperties, Position position) {
+    this.id = id;
     this.myProperties = myProperties == null ? new HashMap<String, Double>() : myProperties;
     this.position = position == null ? new Position(0, 0) : position;
   }
@@ -60,6 +63,22 @@ public class SimObj {
     return position;
   }
 
+  public int getEnergy() {
+    return energy;
+  }
+
+  public void setEnergy(int energy) {
+    this.energy = energy;
+  }
+
+  public boolean isLiving() {
+    return living;
+  }
+
+  public void die() {
+    living = false;
+  }
+
   public Map<String, Double> getMyProperties() {
     return Collections.unmodifiableMap(myProperties);
   }
@@ -72,5 +91,32 @@ public class SimObj {
     // TODO: concurrency!
     otherPropertyWeights.putIfAbsent(propName, defaultValue);
     return otherPropertyWeights.get(propName);
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + id;
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    SimObj other = (SimObj) obj;
+    if (id != other.id)
+      return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "SimObj-" + id;
   }
 }
