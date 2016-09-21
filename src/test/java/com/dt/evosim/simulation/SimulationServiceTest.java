@@ -1,5 +1,8 @@
 package com.dt.evosim.simulation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,20 +38,20 @@ public class SimulationServiceTest {
   }
 
   @Test
-  public void testAddRandomObjectsToSimulation() {
+  public void testAddRandomObjectsToSimulationState() {
     // GIVEN
-    Simulation simulation = Mockito.mock(Simulation.class);
+    SimulationState simulationState = Mockito.mock(SimulationState.class);
     int numberOfNewObjects = 2;
     // WHEN
-    simulationService.addRandomObjectsToSimulation(simulation, numberOfNewObjects);
+    simulationService.addRandomObjectsToSimulationState(simulationState, numberOfNewObjects);
     // THEN
     Mockito.verify(simObjCounter, Mockito.times(numberOfNewObjects)).getAndIncrease();
     Mockito.verify(simObjFactory, Mockito.times(numberOfNewObjects)).randomObject(Matchers.eq(0));
-    Mockito.verify(simulation, Mockito.times(numberOfNewObjects)).addSimObject(Matchers.any(SimObj.class));
+    Mockito.verify(simulationState, Mockito.times(numberOfNewObjects)).addSimObject(Matchers.any(SimObj.class));
   }
 
   @Test
-  public void cleanUpSimulationObjects() {
+  public void testFilterOutDiesSimObjects() {
     // GIVEN
     SimObj simObj1 = new SimObj(0);
     SimObj simObj2 = new SimObj(1);
@@ -56,22 +59,17 @@ public class SimulationServiceTest {
     simObj3.die();
     SimObj simObj4 = new SimObj(3);
     //
-    Simulation simulation = new Simulation();
-    simulation.addSimObject(simObj1);
-    simulation.addSimObject(simObj2);
-    simulation.addSimObject(simObj3);
-    simulation.addSimObject(simObj4);
-    //
-    Assert.assertTrue(simulation.getSimulationObjectsById().containsValue(simObj1));
-    Assert.assertTrue(simulation.getSimulationObjectsById().containsValue(simObj2));
-    Assert.assertTrue(simulation.getSimulationObjectsById().containsValue(simObj3));
-    Assert.assertTrue(simulation.getSimulationObjectsById().containsValue(simObj4));
+    List<SimObj> simulationObjects = new ArrayList<>();
+    simulationObjects.add(simObj1);
+    simulationObjects.add(simObj2);
+    simulationObjects.add(simObj3);
+    simulationObjects.add(simObj4);
     // WHEN
-    simulationService.cleanUpSimulationObjects(simulation);
+    List<SimObj> actualResult = simulationService.filterOutDiedSimObjects(simulationObjects);
     // THEN
-    Assert.assertTrue(simulation.getSimulationObjectsById().containsValue(simObj1));
-    Assert.assertTrue(simulation.getSimulationObjectsById().containsValue(simObj2));
-    Assert.assertFalse(simulation.getSimulationObjectsById().containsValue(simObj3));
-    Assert.assertTrue(simulation.getSimulationObjectsById().containsValue(simObj4));
+    Assert.assertTrue(actualResult.contains(simObj1));
+    Assert.assertTrue(actualResult.contains(simObj2));
+    Assert.assertFalse(actualResult.contains(simObj3));
+    Assert.assertTrue(actualResult.contains(simObj4));
   }
 }

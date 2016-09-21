@@ -1,5 +1,6 @@
 package com.dt.evosim.domain;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,8 +8,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dt.physics.common.Position;
 
-public class SimObj {
-
+public class SimObj implements Serializable {
+  
+  private static final long serialVersionUID = 1L;
   // simple properties
   private int id;
   private Position position;
