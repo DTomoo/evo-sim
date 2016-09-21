@@ -1,7 +1,6 @@
 package com.dt.evosim.simulation;
 
-import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.stream.IntStream;
 
 import com.dt.evosim.domain.SimObj;
 import com.dt.evosim.domain.SimObjCounter;
@@ -13,20 +12,14 @@ public class SimulationService {
   private SimObjFactory simObjFactory = new SimObjFactory();
 
   public void addRandomObjectsToSimulation(Simulation simulation, int numberOfNewObjects) {
-    for (int i = 0; i < numberOfNewObjects; i++) {
+    IntStream.range(0, numberOfNewObjects).forEach(i -> {
       int id = simObjCounter.getAndIncrease();
       SimObj simObj = simObjFactory.randomObject(id);
       simulation.addSimObject(simObj);
-    }
+    });
   }
 
   public void cleanUpSimulationObjects(Simulation simulation) {
-    Iterator<Entry<Integer, SimObj>> iterator = simulation.getSimulationObjectsById().entrySet().iterator();
-    while (iterator.hasNext()) {
-      Entry<Integer, SimObj> entry = iterator.next();
-      if (!entry.getValue().isLiving()) {
-        iterator.remove();
-      }
-    }
+    simulation.getSimulationObjectsById().entrySet().removeIf(e -> !e.getValue().isLiving());
   }
 }
