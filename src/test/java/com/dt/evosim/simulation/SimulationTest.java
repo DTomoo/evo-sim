@@ -3,6 +3,7 @@ package com.dt.evosim.simulation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,7 +64,7 @@ public class SimulationTest {
     Mockito.verify(breedingStrategy, Mockito.times(1)).calculateNextGeneration(Matchers.eq(STUB_LIST1));
     Mockito.verify(simulationStateBuilder, Mockito.times(1)).build(Matchers.eq(13L), Matchers.eq(STUB_LIST2));
     Assert.assertEquals(13L, simulationStateActual.getSimulationAge());
-    Assert.assertEquals(1, simulationStateActual.getSimulationObjectsById().size());
-    Assert.assertTrue(simulationStateActual.getSimulationObjectsById().containsValue(SIM_OBJ));
+    Assert.assertEquals(1, simulationStateActual.getSimulationObjects().count());
+    Assert.assertTrue(simulationStateActual.getSimulationObjects().anyMatch(SIM_OBJ::equals));
   }
 }

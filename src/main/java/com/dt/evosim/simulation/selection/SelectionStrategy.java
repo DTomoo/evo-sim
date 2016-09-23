@@ -7,5 +7,5 @@ import com.dt.evosim.domain.SimObj;
 
 public interface SelectionStrategy {
 
-  public List<SimObj> selectN(int sizeOfSelection, Collection<SimObj> simObjects);
+  List<SimObj> selectN(int sizeOfSelection, Collection<SimObj> simObjects);
 }

@@ -1,9 +1,10 @@
 package com.dt.evosim.simulation;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.StringJoiner;
+import java.util.stream.Stream;
 
+import com.dt.evosim.domain.Population;
 import com.dt.evosim.domain.SimObj;
 
 public class SimulationState implements Serializable {
@@ -11,7 +12,7 @@ public class SimulationState implements Serializable {
   private static final long serialVersionUID = 1L;
   //
   private final long simulationAge;
-  private final Map<Integer, SimObj> simulationObjectsById = new HashMap<>();
+  private final Population population = new Population();
 
   public SimulationState(long simulationAge) {
     this.simulationAge = simulationAge;
@@ -21,12 +22,21 @@ public class SimulationState implements Serializable {
     return simulationAge;
   }
 
-  public Map<Integer, SimObj> getSimulationObjectsById() {
-    return simulationObjectsById;
+  public Stream<SimObj> getSimulationObjects() {
+    return population.getPopulation();
   }
 
   public void addSimObject(SimObj simObj) {
-    Integer id = Integer.valueOf(simObj.getId());
-    simulationObjectsById.put(id, simObj);
+    population.add(simObj);
+  }
+
+  @Override
+  public String toString() {
+    StringJoiner sj = new StringJoiner("\n");
+    sj.add("----------------------------------------");
+    sj.add("simAge=" + simulationAge);
+    sj.add(population.toString());
+    sj.add("========================================");
+    return sj.toString();
   }
 }

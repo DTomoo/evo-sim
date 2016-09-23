@@ -9,10 +9,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.dt.physics.common.Position;
 
 public class SimObj implements Serializable {
-  
+
   private static final long serialVersionUID = 1L;
   // simple properties
-  private int id;
+  private long id;
   private Position position;
   private AtomicInteger age = new AtomicInteger(0);
   private double speed = 0.0d;
@@ -22,15 +22,15 @@ public class SimObj implements Serializable {
   private Map<String, Double> myProperties;
   private Map<String, Double> otherPropertyWeights = new HashMap<String, Double>();
 
-  public SimObj(int id) {
+  public SimObj(long id) {
     this(id, new HashMap<String, Double>(), new Position(0, 0));
   }
 
-  public SimObj(int id, Map<String, Double> myProperties) {
+  public SimObj(long id, Map<String, Double> myProperties) {
     this(id, myProperties, new Position(0, 0));
   }
 
-  public SimObj(int id, Map<String, Double> myProperties, Position position) {
+  public SimObj(long id, Map<String, Double> myProperties, Position position) {
     this.id = id;
     this.myProperties = myProperties == null ? new HashMap<String, Double>() : myProperties;
     this.position = position == null ? new Position(0, 0) : position;
@@ -41,7 +41,7 @@ public class SimObj implements Serializable {
     return val == null ? Double.valueOf(0.0d) : val;
   }
 
-  public int getId() {
+  public long getId() {
     return id;
   }
 
@@ -99,7 +99,7 @@ public class SimObj implements Serializable {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + id;
+    result = prime * result + (int) (id ^ (id >>> 32));
     return result;
   }
 

@@ -54,7 +54,7 @@ public class SimObjPrinterTest {
     // WHEN
     String representation = simObjPrinter.getRepresentation(SIM_OBJ);
     // THEN
-    Assert.assertEquals("SimObj-0\n[x=1.0, y=2.0]", representation);
+    Assert.assertEquals("SimObj-0[x=1.0, y=2.0]", representation);
   }
 
   @Test
@@ -64,6 +64,6 @@ public class SimObjPrinterTest {
     // WHEN
     String representation = simObjPrinter.getRepresentation(SIM_OBJ);
     // THEN
-    Assert.assertEquals("SimObj-0\n My properties:\n* x: 1.0\n* y: 2.0\n* z: 3.0", representation);
+    Assert.assertEquals("SimObj-0\nMy properties:(x=1.0, y=2.0, z=3.0)", representation);
   }
 }

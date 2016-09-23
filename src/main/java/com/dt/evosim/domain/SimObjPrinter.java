@@ -1,6 +1,6 @@
 package com.dt.evosim.domain;
 
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SimObjPrinter {
 
@@ -23,22 +23,20 @@ public class SimObjPrinter {
       sb.append("SimObj-");
       sb.append(simObj.getId());
       if (withPosition) {
-        sb.append("\n");
         sb.append(simObj.getPosition());
       }
       if (withMyProperties) {
-        sb.append("\n My properties:");
-        Map<String, Double> myProperties = simObj.getMyProperties();
-        for (String key : myProperties.keySet()) {
-          sb.append("\n* ");
-          sb.append(key);
-          sb.append(": ");
-          sb.append(myProperties.get(key));
-        }
+        sb.append("\nMy properties:(");
+        sb.append(getPropertiesText(simObj));
+        sb.append(")");
       }
     } else {
       sb.append("<null object>");
     }
     return sb.toString();
+  }
+
+  private String getPropertiesText(SimObj simObj) {
+    return simObj.getMyProperties().entrySet().stream().map(t -> t.toString()).collect(Collectors.joining(", "));
   }
 }

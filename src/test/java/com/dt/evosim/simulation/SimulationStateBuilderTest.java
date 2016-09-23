@@ -20,8 +20,8 @@ public class SimulationStateBuilderTest {
     SimulationState simulationState = builder.build(12, Arrays.asList(simObj0, simObj1, simObj2));
     // THEN
     Assert.assertEquals(12, simulationState.getSimulationAge());
-    Assert.assertTrue(simulationState.getSimulationObjectsById().containsValue(simObj0));
-    Assert.assertTrue(simulationState.getSimulationObjectsById().containsValue(simObj1));
-    Assert.assertTrue(simulationState.getSimulationObjectsById().containsValue(simObj2));
+    Assert.assertTrue(simulationState.getSimulationObjects().anyMatch(simObj0::equals));
+    Assert.assertTrue(simulationState.getSimulationObjects().anyMatch(simObj1::equals));
+    Assert.assertTrue(simulationState.getSimulationObjects().anyMatch(simObj2::equals));
   }
 }
