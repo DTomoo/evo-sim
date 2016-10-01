@@ -41,16 +41,16 @@ public class SimObjTest {
     simObj.getOtherPropertyWeight(key, expected);
     // THEN
     Assert.assertEquals(expected, simObj.getOtherPropertyWeight(key, 0.0d), 0.00001d);
-    Assert.assertEquals(expected, simObj.getOtherPropertyWeights().get(key), 0.00001d);
+    Assert.assertEquals(Double.valueOf(expected), simObj.getOtherPropertyWeights().get(key));
   }
 
   @Test
   public void testMyProperty() {
     // GIVEN
     Map<String, Double> props = new HashMap<String, Double>();
-    props.put("prop1", 0.11d);
-    props.put("prop2", 0.23d);
-    props.put("prop3", 0.36d);
+    props.put("prop1", Double.valueOf(0.11d));
+    props.put("prop2", Double.valueOf(0.23d));
+    props.put("prop3", Double.valueOf(0.36d));
     SimObj simObj = new SimObj(0, props);
     // WHEN
     Double val1 = simObj.getMyValue("prop1");

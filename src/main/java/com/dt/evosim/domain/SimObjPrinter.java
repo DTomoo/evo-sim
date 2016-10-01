@@ -37,6 +37,6 @@ public class SimObjPrinter {
   }
 
   private String getPropertiesText(SimObj simObj) {
-    return simObj.getMyProperties().entrySet().stream().map(t -> t.toString()).collect(Collectors.joining(", "));
+    return simObj.getMyProperties().entrySet().stream().map(Object::toString).collect(Collectors.joining(", "));
   }
 }

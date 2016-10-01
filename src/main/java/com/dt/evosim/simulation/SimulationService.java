@@ -12,17 +12,24 @@ import com.dt.evosim.domain.SimObjFactory;
 public class SimulationService {
 
   private SimObjCounter simObjCounter = new SimObjCounter();
-  private SimObjFactory simObjFactory = new SimObjFactory();
+  private SimObjFactory simObjFactory;
+  private Simulation simulation;
 
-  public void addRandomObjectsToSimulationState(SimulationState simulationState, int numberOfNewObjects) {
-    IntStream.range(0, numberOfNewObjects).forEach(i -> {
-      int id = simObjCounter.getAndIncrease();
-      SimObj simObj = simObjFactory.randomObject(id);
-      simulationState.addSimObject(simObj);
-    });
+  public SimulationService(Simulation simulation) {
+    this.simulation = simulation;
+    simObjFactory = new SimObjFactory(simulation.getEnvironment());
+  }
+
+  public void addRandomObjectsToSimulationState(int numberOfNewObjects) {
+    IntStream.range(0, numberOfNewObjects)
+        .map(simObjCounter::getAndIncrease)
+        .mapToObj(simObjFactory::randomObject)
+        .forEach(simulation.getSimulationState()::addSimObject);
   }
 
   public List<SimObj> filterOutDiedSimObjects(Collection<SimObj> simObjectsById) {
-    return simObjectsById.stream().filter(SimObj::isLiving).collect(Collectors.toList());
+    return simObjectsById.parallelStream().//
+        filter(SimObj::isLiving).//
+        collect(Collectors.toList());
   }
 }

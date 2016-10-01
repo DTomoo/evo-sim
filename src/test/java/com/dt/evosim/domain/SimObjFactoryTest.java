@@ -4,13 +4,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dt.evosim.simulation.Environment;
+
 public class SimObjFactoryTest {
 
+  private Environment environment = new Environment(100, 100);
   private SimObjFactory simObjFactory;
 
   @Before
   public void setUp() {
-    simObjFactory = new SimObjFactory();
+    simObjFactory = new SimObjFactory(environment);
   }
 
   @Test

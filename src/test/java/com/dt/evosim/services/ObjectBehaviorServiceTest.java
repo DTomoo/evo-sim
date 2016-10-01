@@ -63,9 +63,9 @@ public class ObjectBehaviorServiceTest {
   public void testGetBehaviorWeight() {
     // GIVEN
     Map<String, Double> myProps = new HashMap<String, Double>();
-    myProps.put("myA", 0.1d);
-    myProps.put("myB", 0.1d);
-    myProps.put("myC", 0.1d);
+    myProps.put("myA", Double.valueOf(0.1d));
+    myProps.put("myB", Double.valueOf(0.1d));
+    myProps.put("myC", Double.valueOf(0.1d));
     SimObj source = new SimObj(0, myProps);
     SimObj target = new SimObj(0, myProps);
     // WHEN
@@ -78,9 +78,9 @@ public class ObjectBehaviorServiceTest {
   public void testGetBehaviorWeightIsInProperInterval() {
     // GIVEN
     Map<String, Double> myProps = new HashMap<String, Double>();
-    myProps.put("myA", 0.1d);
-    myProps.put("myB", 0.1d);
-    myProps.put("myC", 0.1d);
+    myProps.put("myA", Double.valueOf(0.1d));
+    myProps.put("myB", Double.valueOf(0.1d));
+    myProps.put("myC", Double.valueOf(0.1d));
     SimObj source = new SimObj(0, myProps);
     SimObj target = new SimObj(0, myProps);
     // WHEN
@@ -122,7 +122,7 @@ public class ObjectBehaviorServiceTest {
     SimObj source = new SimObj(0);
     SimObj target = new SimObj(0);
     objectBehaviorService = Mockito.spy(objectBehaviorService);
-    Mockito.doReturn(10.0d).when(objectBehaviorService).getBehaviorWeight(Matchers.any(SimObj.class),
+    Mockito.doReturn(Double.valueOf(10.0d)).when(objectBehaviorService).getBehaviorWeight(Matchers.any(SimObj.class),
         Matchers.any(SimObj.class));
     // WHEN
     Vector directionVector = objectBehaviorService.getDirectionVector(source, target);
@@ -139,7 +139,8 @@ public class ObjectBehaviorServiceTest {
 
   private void mockRandomWeightService() {
     RandomWeightService randomWeightService = Mockito.mock(RandomWeightService.class);
-    Mockito.when(randomWeightService.getRandomWeight()).thenReturn(0.2d).thenReturn(0.7d).thenReturn(0.6d);
+    Mockito.doReturn(Double.valueOf(0.2d)).doReturn(Double.valueOf(0.7d)).doReturn(Double.valueOf(0.6d))
+        .when(randomWeightService).getRandomWeight();
     Whitebox.setInternalState(objectBehaviorService, "randomWeightService", randomWeightService);
   }
 }

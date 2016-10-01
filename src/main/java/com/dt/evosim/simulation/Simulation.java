@@ -7,21 +7,26 @@ import java.util.stream.Collectors;
 import com.dt.evosim.domain.SimObj;
 import com.dt.evosim.simulation.breeding.BreedingStrategy;
 import com.dt.evosim.simulation.breeding.DummyBreedingStrategy;
+import com.dt.evosim.simulation.moving.EdgeTestingMovingStrategy;
+import com.dt.evosim.simulation.moving.MovingStrategy;
 import com.dt.evosim.simulation.selection.SelectionStrategy;
 import com.dt.evosim.simulation.selection.YoungestSelectionStrategy;
 
 public class Simulation {
 
+  private final Environment environment;
   // services
   private SimulationStateBuilder simulationStateBuilder = new SimulationStateBuilder();
   private SelectionStrategy selectionStrategy = new YoungestSelectionStrategy();
   private BreedingStrategy breedingStrategy = new DummyBreedingStrategy();
+  private MovingStrategy movingStrategy;
   // inner state
   private int selectionNumber = 10;
   private SimulationState simulationState = new SimulationState(0);
 
-  public SimulationState getSimulationState() {
-    return simulationState;
+  public Simulation(Environment environment) {
+    this.environment = environment;
+    this.movingStrategy = new EdgeTestingMovingStrategy(environment);
   }
 
   public void setSimulationState(SimulationState simulationState) {
@@ -35,6 +40,10 @@ public class Simulation {
     List<SimObj> bestSimObjects = selection();
     List<SimObj> nextGeneration = breeding(bestSimObjects);
     settingNextState(nextGeneration);
+  }
+
+  public void moveObjects() {
+    simulationState.getSimulationObjects().forEach(movingStrategy);
   }
 
   private List<SimObj> selection() {
@@ -57,5 +66,13 @@ public class Simulation {
     sj.add("Simulation");
     sj.add(simulationState.toString());
     return sj.toString();
+  }
+
+  public Environment getEnvironment() {
+    return environment;
+  }
+
+  public SimulationState getSimulationState() {
+    return simulationState;
   }
 }

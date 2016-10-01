@@ -3,7 +3,6 @@ package com.dt.evosim.simulation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,6 +19,7 @@ import com.dt.evosim.simulation.selection.SelectionStrategy;
 
 public class SimulationTest {
 
+  private Environment environment = new Environment(100, 100);
   private Simulation simulation;
   @Mock
   private BreedingStrategy breedingStrategy;
@@ -34,7 +34,7 @@ public class SimulationTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    simulation = new Simulation();
+    simulation = new Simulation(environment);
     //
     Mockito.doReturn(STUB_LIST2).when(breedingStrategy).calculateNextGeneration(STUB_LIST1);
     Whitebox.setInternalState(simulation, "breedingStrategy", breedingStrategy);

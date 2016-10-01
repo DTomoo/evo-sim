@@ -19,18 +19,23 @@ import com.dt.evosim.domain.SimObjFactory;
 public class SimulationServiceTest {
 
   private SimulationService simulationService;
+  private static final SimObj SIM_OBJ = new SimObj(0);
+  @Mock
+  private SimulationState simulationState;
+  @Mock
+  private Simulation simulation;
   @Mock
   private SimObjCounter simObjCounter;
   @Mock
   private SimObjFactory simObjFactory;
-  private static final SimObj SIM_OBJ = new SimObj(0);
 
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    simulationService = new SimulationService();
+    Mockito.doReturn(simulationState).when(simulation).getSimulationState();
+    simulationService = new SimulationService(simulation);
     //
-    Mockito.doReturn(0).when(simObjCounter).getAndIncrease();
+    Mockito.doReturn(Integer.valueOf(0)).when(simObjCounter).getAndIncrease();
     Whitebox.setInternalState(simulationService, "simObjCounter", simObjCounter);
     //
     Mockito.doReturn(SIM_OBJ).when(simObjFactory).randomObject(Matchers.anyInt());
@@ -40,12 +45,11 @@ public class SimulationServiceTest {
   @Test
   public void testAddRandomObjectsToSimulationState() {
     // GIVEN
-    SimulationState simulationState = Mockito.mock(SimulationState.class);
     int numberOfNewObjects = 2;
     // WHEN
-    simulationService.addRandomObjectsToSimulationState(simulationState, numberOfNewObjects);
+    simulationService.addRandomObjectsToSimulationState(numberOfNewObjects);
     // THEN
-    Mockito.verify(simObjCounter, Mockito.times(numberOfNewObjects)).getAndIncrease();
+    Mockito.verify(simObjCounter, Mockito.times(numberOfNewObjects)).getAndIncrease(Matchers.anyInt());
     Mockito.verify(simObjFactory, Mockito.times(numberOfNewObjects)).randomObject(Matchers.eq(0));
     Mockito.verify(simulationState, Mockito.times(numberOfNewObjects)).addSimObject(Matchers.any(SimObj.class));
   }
