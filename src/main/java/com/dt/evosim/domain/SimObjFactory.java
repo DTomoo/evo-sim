@@ -21,10 +21,12 @@ public class SimObjFactory {
   }
 
   public SimObj randomObject(int id) {
-    Position pos = getRandomPosition();
+    int size = 5;
+    Position pos = getRandomPosition(size);
     Vector dir = getRandomDirection();
     Map<String, Double> myProperties = createRandomFields(1);
     SimObj simObj = new SimObj(id, myProperties, pos, dir);
+    simObj.setSize(size);
     return simObj;
   }
 
@@ -44,12 +46,13 @@ public class SimObjFactory {
     return sb.toString();
   }
 
-  private Position getRandomPosition() {
-    return new Position(rnd.getRandomIntInClosedRange(0, environment.getMaxWidth()),
-        rnd.getRandomIntInClosedRange(0, environment.getMaxHeight()));
+  private Position getRandomPosition(int size) {
+    return new Position(
+        rnd.getRandomIntInClosedRange(environment.getMinWidth() + size, environment.getMaxWidth() - size),
+        rnd.getRandomIntInClosedRange(environment.getMinHeight() + size, environment.getMaxHeight() - size));
   }
 
   private Vector getRandomDirection() {
-    return new Vector(rnd.getRandomIntInClosedRange(-5, 5), rnd.getRandomIntInClosedRange(-5, 5));
+    return new Vector(rnd.getRandomXorY(-5, 5), rnd.getRandomXorY(-5, 5));
   }
 }

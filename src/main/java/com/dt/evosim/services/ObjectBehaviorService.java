@@ -13,7 +13,7 @@ public class ObjectBehaviorService {
   public Vector getDirectionVector(SimObj source, SimObj target) {
     validateSimObj(source);
     validateSimObj(target);
-    //
+
     Vector dir = positionCalculatorService.getVector(source.getPosition(), target.getPosition());
     return dir.getNormalizedVectorToScalar(getBehaviorWeight(source, target));
   }
@@ -21,7 +21,7 @@ public class ObjectBehaviorService {
   public double getBehaviorWeight(SimObj source, SimObj target) {
     validateSimObj(source);
     validateSimObj(target);
-    //
+
     double sum = 0.0d;
     int counter = 0;
     for (String propName : target.getMyProperties().keySet()) {

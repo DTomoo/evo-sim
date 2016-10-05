@@ -43,7 +43,28 @@ public class Simulation {
   }
 
   public void moveObjects() {
+    collisionHandling();
     simulationState.getSimulationObjects().forEach(movingStrategy);
+  }
+
+  public double getDistance(SimObj o1, SimObj o2) {
+    return 0.0d;
+  }
+
+  public void collisionHandling() {
+    // simulationState.getSimulationObjects()
+    // .forEach(x -> simulationState.getSimulationObjects()
+    // .forEach(y -> System.out.println(y)));
+    simulationState.getSimulationObjects().forEach(
+        x -> simulationState.getSimulationObjects().filter(y -> areColliding(x, y)).forEach(y -> collide(x, y)));
+  }
+
+  private boolean areColliding(SimObj obj1, SimObj obj2) {
+    return obj1.getId() < obj2.getId() && getDistance(obj1, obj2) <= obj1.getSize() + obj2.getSize();
+  }
+
+  private void collide(SimObj obj1, SimObj obj2) {
+//    System.out.println(obj1.getId() + "->" + obj2.getId());
   }
 
   private List<SimObj> selection() {
