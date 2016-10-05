@@ -20,6 +20,7 @@ public class SimObj implements Serializable {
   private double speed = 0.0d;
   private int energy = 100;
   private boolean living = true;
+  private int size;
   // weighted properties
   private Map<String, Double> myProperties;
   private Map<String, Double> otherPropertyWeights = new HashMap<String, Double>();
@@ -62,6 +63,14 @@ public class SimObj implements Serializable {
 
   public double getSpeed() {
     return speed;
+  }
+
+  public void setSize(int size) {
+    this.size = size;
+  }
+
+  public int getSize() {
+    return size;
   }
 
   public Position getPosition() {

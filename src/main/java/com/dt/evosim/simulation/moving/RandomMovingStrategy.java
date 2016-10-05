@@ -21,9 +21,9 @@ public class RandomMovingStrategy implements MovingStrategy {
     int x, y;
     if (sign == 0) {
       x = oldPos.getX();
-      y = environment.limitedHeight(oldPos.getY() + rnd.getRandomXorY(1, -1));
+      y = environment.limitedHeight(oldPos.getY() + rnd.getRandomXorY(1, -1), simObj.getSize());
     } else {
-      x = environment.limitedWidth(oldPos.getX() + sign);
+      x = environment.limitedWidth(oldPos.getX() + sign, simObj.getSize());
       y = oldPos.getY();
     }
     simObj.setPosition(new Position(x, y));

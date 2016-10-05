@@ -1,5 +1,6 @@
 package com.dt.evosim.simulation;
 
+import com.dt.evosim.domain.SimObj;
 import com.dt.physics.common.Position;
 
 public class Environment {
@@ -16,28 +17,36 @@ public class Environment {
     this.maxHeight = maxHeight;
   }
 
-  public boolean isWidthLimit(Position pos) {
-    return pos.getX() <= minWidth || maxWidth <= pos.getX();
+  public boolean isOnWidthEdge(SimObj simObj) {
+    Position pos = simObj.getPosition();
+    boolean r = pos.getX() - simObj.getSize() <= minWidth || maxWidth <= pos.getX() + simObj.getSize();
+    return r;
   }
 
-  public boolean isHeightLimit(Position pos) {
-    return pos.getY() <= minHeight || maxHeight <= pos.getY();
+  public boolean isOnHeightEdge(SimObj simObj) {
+    Position pos = simObj.getPosition();
+    boolean r = pos.getY() - simObj.getSize() <= minHeight || maxHeight <= pos.getY() + simObj.getSize();
+    return r;
   }
 
-  public Position limitedPosition(Position pos) {
-    return new Position(limitedWidth(pos.getX()), limitedHeight(pos.getY()));
+  public Position limitedPosition(Position position, int objSize) {
+    return new Position(limitedWidth(position.getX(), objSize), limitedHeight(position.getY(), objSize));
   }
 
-  public int limitedWidth(int width) {
-    return between(width, minWidth, this.maxWidth);
+  public Position limitedPosition(SimObj simObj) {
+    return limitedPosition(simObj.getPosition(), simObj.getSize());
   }
 
-  public int limitedHeight(int height) {
-    return between(height, minHeight, this.maxHeight);
+  public int limitedWidth(int width, int objSize) {
+    return between(width, minWidth + objSize, this.maxWidth - objSize);
+  }
+
+  public int limitedHeight(int height, int objSize) {
+    return between(height, minHeight + objSize, this.maxHeight - objSize);
   }
 
   private static int between(int number, int min, int max) {
-    return Math.min(max, Math.max(0, number));
+    return Math.min(max, Math.max(min, number));
   }
 
   public int getMaxWidth() {

@@ -23,23 +23,25 @@ public class EdgeTestingMovingStrategy implements MovingStrategy {
     double xDir = simObj.getDirection().getX();
     double yDir = simObj.getDirection().getY();
     boolean changeDirection = false;
-    if (environment.isWidthLimit(simObj.getPosition())) {
+    if (environment.isOnWidthEdge(simObj)) {
       xDir *= -1;
       changeDirection = true;
     }
-    if (environment.isHeightLimit(simObj.getPosition())) {
+    if (environment.isOnHeightEdge(simObj)) {
       yDir *= -1;
       changeDirection = true;
     }
     if (changeDirection) {
-      simObj.setDirection(new Vector(xDir, yDir));
+      simObj.setPosition(environment.limitedPosition(simObj));
+      Vector direction = new Vector(xDir, yDir);
+      simObj.setDirection(direction);
     }
   }
 
   private void changePosition(SimObj simObj) {
     Position oldPos = simObj.getPosition();
     Position afterCalculated = oldPos.add(simObj.getDirection());
-    Position limitedPosition = environment.limitedPosition(afterCalculated);
+    Position limitedPosition = environment.limitedPosition(afterCalculated, simObj.getSize());
     simObj.setPosition(limitedPosition);
   }
 
