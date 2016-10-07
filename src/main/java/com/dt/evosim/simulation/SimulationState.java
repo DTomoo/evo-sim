@@ -22,8 +22,16 @@ public class SimulationState implements Serializable {
     return simulationAge;
   }
 
-  public Stream<SimObj> getSimulationObjects() {
-    return population.getPopulation();
+  // public Stream<SimObj> getSimulationObjects() {
+  // return population.getEntities().stream();
+  // }
+
+  public Stream<SimObj> getPopulationStream() {
+    return population.getEntities().stream();
+  }
+
+  public Stream<SimObj> getPopulationParallelStream() {
+    return population.getEntities().parallelStream();
   }
 
   public void addSimObject(SimObj simObj) {

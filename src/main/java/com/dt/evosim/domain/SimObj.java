@@ -105,6 +105,12 @@ public class SimObj implements Serializable {
     living = false;
   }
 
+  public double distTo(SimObj otherObj) {
+    Position o = otherObj.getPosition();
+    Position p = this.getPosition();
+    return Math.sqrt(Math.pow(p.getX() - o.getX(), 2) + Math.pow(p.getY() - o.getY(), 2));
+  }
+
   public Map<String, Double> getMyProperties() {
     return Collections.unmodifiableMap(myProperties);
   }
