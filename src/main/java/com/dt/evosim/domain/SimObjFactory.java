@@ -53,6 +53,6 @@ public class SimObjFactory {
   }
 
   private Vector getRandomDirection() {
-    return new Vector(rnd.getRandomXorY(-5, 5), rnd.getRandomXorY(-5, 5));
+    return new Vector(rnd.getRandomIntInClosedRange(-5, 5), rnd.getRandomIntInClosedRange(-5, 5));
   }
 }

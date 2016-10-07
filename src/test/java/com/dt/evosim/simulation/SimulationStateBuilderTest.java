@@ -1,6 +1,8 @@
 package com.dt.evosim.simulation;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,11 +19,12 @@ public class SimulationStateBuilderTest {
     SimObj simObj1 = new SimObj(1);
     SimObj simObj2 = new SimObj(2);
     // WHEN
-    SimulationState simulationState = builder.build(12, Arrays.asList(simObj0, simObj1, simObj2));
+    SimulationState simulationState = builder.build(12, Stream.of(simObj0, simObj1, simObj2));
     // THEN
     Assert.assertEquals(12, simulationState.getSimulationAge());
-    Assert.assertTrue(simulationState.getSimulationObjects().anyMatch(simObj0::equals));
-    Assert.assertTrue(simulationState.getSimulationObjects().anyMatch(simObj1::equals));
-    Assert.assertTrue(simulationState.getSimulationObjects().anyMatch(simObj2::equals));
+    List<SimObj> simObjects = simulationState.getPopulationParallelStream().collect(Collectors.toList());
+    Assert.assertTrue(simObjects.contains(simObj0));
+    Assert.assertTrue(simObjects.contains(simObj1));
+    Assert.assertTrue(simObjects.contains(simObj2));
   }
 }

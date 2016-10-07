@@ -1,14 +1,15 @@
 package com.dt.evosim.simulation;
 
-import java.util.List;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.dt.evosim.domain.SimObj;
 import com.dt.evosim.simulation.breeding.BreedingStrategy;
 import com.dt.evosim.simulation.breeding.DummyBreedingStrategy;
 import com.dt.evosim.simulation.moving.EdgeTestingMovingStrategy;
 import com.dt.evosim.simulation.moving.MovingStrategy;
+import com.dt.evosim.simulation.mutation.DummyMutationStrategy;
+import com.dt.evosim.simulation.mutation.MutationStrategy;
 import com.dt.evosim.simulation.selection.SelectionStrategy;
 import com.dt.evosim.simulation.selection.YoungestSelectionStrategy;
 
@@ -17,11 +18,11 @@ public class Simulation {
   private final Environment environment;
   // services
   private SimulationStateBuilder simulationStateBuilder = new SimulationStateBuilder();
-  private SelectionStrategy selectionStrategy = new YoungestSelectionStrategy();
+  private SelectionStrategy selectionStrategy = new YoungestSelectionStrategy(10);
   private BreedingStrategy breedingStrategy = new DummyBreedingStrategy();
+  private MutationStrategy mutationStrategy = new DummyMutationStrategy();
   private MovingStrategy movingStrategy;
   // inner state
-  private int selectionNumber = 10;
   private SimulationState simulationState = new SimulationState(0);
 
   public Simulation(Environment environment) {
@@ -37,46 +38,33 @@ public class Simulation {
   }
 
   public void nextCycle() {
-    List<SimObj> bestSimObjects = selection();
-    List<SimObj> nextGeneration = breeding(bestSimObjects);
-    settingNextState(nextGeneration);
+    Stream<SimObj> bestSimObjects = selection();
+    Stream<SimObj> spawnedObjects = breeding(bestSimObjects);
+    Stream<SimObj> mutations = mutating(spawnedObjects);
+    settingNextState(mutations);
   }
 
   public void moveObjects() {
-    collisionHandling();
-    simulationState.getSimulationObjects().forEach(movingStrategy);
+    simulationState.getPopulationParallelStream().forEach(movingStrategy);
   }
 
   public double getDistance(SimObj o1, SimObj o2) {
-    return 0.0d;
+    return o1.getPosition().getVectorTo(o2.getPosition()).getScalar();
   }
 
-  public void collisionHandling() {
-    // simulationState.getSimulationObjects()
-    // .forEach(x -> simulationState.getSimulationObjects()
-    // .forEach(y -> System.out.println(y)));
-    simulationState.getSimulationObjects().forEach(
-        x -> simulationState.getSimulationObjects().filter(y -> areColliding(x, y)).forEach(y -> collide(x, y)));
+  private Stream<SimObj> selection() {
+    return selectionStrategy.selectBestObjects(simulationState.getPopulationParallelStream());
   }
 
-  private boolean areColliding(SimObj obj1, SimObj obj2) {
-    return obj1.getId() < obj2.getId() && getDistance(obj1, obj2) <= obj1.getSize() + obj2.getSize();
-  }
-
-  private void collide(SimObj obj1, SimObj obj2) {
-//    System.out.println(obj1.getId() + "->" + obj2.getId());
-  }
-
-  private List<SimObj> selection() {
-    return selectionStrategy.selectN(selectionNumber,
-        simulationState.getSimulationObjects().collect(Collectors.toList()));
-  }
-
-  private List<SimObj> breeding(List<SimObj> bestSimObjects) {
+  private Stream<SimObj> breeding(Stream<SimObj> bestSimObjects) {
     return breedingStrategy.calculateNextGeneration(bestSimObjects);
   }
 
-  private void settingNextState(List<SimObj> nextGeneration) {
+  private Stream<SimObj> mutating(Stream<SimObj> simObjects) {
+    return mutationStrategy.mutate(simObjects);
+  }
+
+  private void settingNextState(Stream<SimObj> nextGeneration) {
     long newAge = simulationState.getSimulationAge() + 1;
     setSimulationState(simulationStateBuilder.build(newAge, nextGeneration));
   }
