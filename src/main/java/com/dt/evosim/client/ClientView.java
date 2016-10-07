@@ -47,7 +47,7 @@ public class ClientView extends JFrame {
   public void displaySimulation(Simulation simulation) {
     resetGraphics(simulation);
     drawObjects(simulation.getSimulationState());
-    simulation.getSimulationState().getSimulationObjects().forEach(this::drawCircle);
+    simulation.getSimulationState().getPopulationParallelStream().forEach(this::drawCircle);
     flushDrawing();
   }
 
@@ -123,6 +123,6 @@ public class ClientView extends JFrame {
   }
 
   private void drawObjects(SimulationState simulationState) {
-    simulationState.getSimulationObjects().forEach(this::drawCircle);
+    simulationState.getPopulationParallelStream().forEach(this::drawCircle);
   }
 }
