@@ -1,5 +1,7 @@
 package com.dt.evosim.simulation;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
@@ -12,7 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
 
 import com.dt.evosim.domain.SimObj;
+import com.dt.evosim.simulation.behavior.BehaviorStrategy;
 import com.dt.evosim.simulation.breeding.BreedingStrategy;
+import com.dt.evosim.simulation.moving.MovingStrategy;
 import com.dt.evosim.simulation.mutation.MutationStrategy;
 import com.dt.evosim.simulation.selection.SelectionStrategy;
 
@@ -28,10 +32,16 @@ public class SimulationTest {
   private SelectionStrategy selectionStrategy;
   @Mock
   private SimulationStateBuilder simulationStateBuilder;
+  @Mock
+  private MovingStrategy movingStrategy;
+  @Mock
+  private BehaviorStrategy behaviorStrategy;
+
   private static final SimObj SIM_OBJ = new SimObj(123);
   private static final Stream<SimObj> STUB_STREAM1 = Stream.of();
   private static final Stream<SimObj> STUB_STREAM2 = Stream.of(SIM_OBJ);
   private static final Stream<SimObj> STUB_STREAM3 = Stream.of(SIM_OBJ);
+  private static final Collection<SimObj> COLLECTION = new ArrayList<>();
 
   @Before
   public void setUp() {
@@ -56,6 +66,8 @@ public class SimulationTest {
     Whitebox.setInternalState(simulation, "simulationStateBuilder", simulationStateBuilder);
 
 
+    Whitebox.setInternalState(simulation, "movingStrategy", movingStrategy);
+    Whitebox.setInternalState(simulation, "behaviorStrategy", behaviorStrategy);
   }
 
   @Test
@@ -75,4 +87,23 @@ public class SimulationTest {
     Assert.assertEquals(1, simulationStateActual.getPopulationStream().count());
     Assert.assertTrue(simulationStateActual.getPopulationStream().anyMatch(SIM_OBJ::equals));
   }
+
+  @Test
+  public void testMoveObjects() {
+    // GIVEN
+    SimulationState simulationState = Mockito.mock(SimulationState.class);
+    Mockito.doReturn(COLLECTION).when(simulationState).getPopulation();
+    Stream<SimObj> stream = Mockito.mock(Stream.class);
+    Mockito.doReturn(stream).when(simulationState).getPopulationParallelStream();
+    simulation.setSimulationState(simulationState);
+
+    // WHEN
+    simulation.moveObjects();
+    // THEN
+    Mockito.verify(simulationState, Mockito.times(1)).getPopulation();
+    Mockito.verify(behaviorStrategy, Mockito.times(1)).behave(COLLECTION);
+    Mockito.verify(simulationState, Mockito.times(1)).getPopulationParallelStream();
+    Mockito.verify(stream, Mockito.times(1)).forEach(movingStrategy);
+  }
+
 }

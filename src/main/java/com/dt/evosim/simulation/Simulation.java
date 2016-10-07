@@ -4,6 +4,8 @@ import java.util.StringJoiner;
 import java.util.stream.Stream;
 
 import com.dt.evosim.domain.SimObj;
+import com.dt.evosim.simulation.behavior.BehaviorStrategy;
+import com.dt.evosim.simulation.behavior.DummyBehaviorStrategy;
 import com.dt.evosim.simulation.breeding.BreedingStrategy;
 import com.dt.evosim.simulation.breeding.DummyBreedingStrategy;
 import com.dt.evosim.simulation.moving.EdgeTestingMovingStrategy;
@@ -21,6 +23,7 @@ public class Simulation {
   private SelectionStrategy selectionStrategy = new YoungestSelectionStrategy(10);
   private BreedingStrategy breedingStrategy = new DummyBreedingStrategy();
   private MutationStrategy mutationStrategy = new DummyMutationStrategy();
+  private BehaviorStrategy behaviorStrategy = new DummyBehaviorStrategy();
   private MovingStrategy movingStrategy;
   // inner state
   private SimulationState simulationState = new SimulationState(0);
@@ -45,11 +48,8 @@ public class Simulation {
   }
 
   public void moveObjects() {
+    behaviorStrategy.behave(simulationState.getPopulation());
     simulationState.getPopulationParallelStream().forEach(movingStrategy);
-  }
-
-  public double getDistance(SimObj o1, SimObj o2) {
-    return o1.getPosition().getVectorTo(o2.getPosition()).getScalar();
   }
 
   private Stream<SimObj> selection() {

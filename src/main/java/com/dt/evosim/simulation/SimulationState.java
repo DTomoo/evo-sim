@@ -1,6 +1,7 @@
 package com.dt.evosim.simulation;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
 
@@ -22,9 +23,9 @@ public class SimulationState implements Serializable {
     return simulationAge;
   }
 
-  // public Stream<SimObj> getSimulationObjects() {
-  // return population.getEntities().stream();
-  // }
+  public Collection<SimObj> getPopulation() {
+    return population.getEntities();
+  }
 
   public Stream<SimObj> getPopulationStream() {
     return population.getEntities().stream();
