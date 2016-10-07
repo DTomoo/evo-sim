@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 import com.dt.evosim.domain.SimObj;
 import com.dt.evosim.simulation.behavior.BehaviorStrategy;
-import com.dt.evosim.simulation.behavior.DummyBehaviorStrategy;
+import com.dt.evosim.simulation.behavior.CollidingBehaviorStrategy;
 import com.dt.evosim.simulation.breeding.BreedingStrategy;
 import com.dt.evosim.simulation.breeding.DummyBreedingStrategy;
 import com.dt.evosim.simulation.moving.EdgeTestingMovingStrategy;
@@ -23,7 +23,7 @@ public class Simulation {
   private SelectionStrategy selectionStrategy = new YoungestSelectionStrategy(10);
   private BreedingStrategy breedingStrategy = new DummyBreedingStrategy();
   private MutationStrategy mutationStrategy = new DummyMutationStrategy();
-  private BehaviorStrategy behaviorStrategy = new DummyBehaviorStrategy();
+  private BehaviorStrategy behaviorStrategy = new CollidingBehaviorStrategy();
   private MovingStrategy movingStrategy;
   // inner state
   private SimulationState simulationState = new SimulationState(0);
