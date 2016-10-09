@@ -114,7 +114,8 @@ public class ClientView extends JFrame {
   private void drawCircle(SimObj simObj) {
     int size = simObj.getSize();
     Position drawPos = getViewPosition(simObj.getPosition());
-    graphics.drawOval(drawPos.getX() - size, drawPos.getY() - size, 2 * size, 2 * size);
+    graphics.drawOval(drawPos.getX() - size, drawPos.getY() - size, 2 * size + 1, 2 * size + 1);
+    graphics.drawString(String.valueOf(simObj.getId()), drawPos.getX(), drawPos.getY());
   }
 
   private void flushDrawing() {

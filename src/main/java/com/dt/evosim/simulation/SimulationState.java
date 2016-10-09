@@ -32,7 +32,7 @@ public class SimulationState implements Serializable {
   }
 
   public Stream<SimObj> getPopulationParallelStream() {
-    return population.getEntities().parallelStream();
+    return population.getEntities().stream();
   }
 
   public void addSimObject(SimObj simObj) {

@@ -20,7 +20,7 @@ class ClientController {
       while (running) {
         client.displaySimulation(simulation);
         simulation.moveObjects();
-        Thread.sleep(50);
+        Thread.sleep(20);
       }
     }
   }

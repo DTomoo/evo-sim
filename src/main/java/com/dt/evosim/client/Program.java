@@ -9,10 +9,10 @@ import com.dt.evosim.simulation.SimulationBuilder;
 public class Program {
 
   public static void main(String[] args) throws UnknownHostException, IOException, InterruptedException {
-    final int width = 100;
-    final int height = 100;
+    final int width = 200;
+    final int height = 200;
     final int border = 30;
-    final int count = 5;
+    final int count = 10;
 
     Simulation clientModel = createModel(width, height, count);
     ClientView clientView = createView(width, height, border);

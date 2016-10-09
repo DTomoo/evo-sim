@@ -15,19 +15,22 @@ public class EdgeTestingMovingStrategy implements MovingStrategy {
 
   @Override
   public void accept(SimObj simObj) {
-    changePosition(simObj);
     changeMovingDirection(simObj);
+    changePosition(simObj);
   }
 
   private void changeMovingDirection(SimObj simObj) {
-    double xDir = simObj.getDirection().getX();
-    double yDir = simObj.getDirection().getY();
+    Vector movingVector = simObj.getMovingVector();
+    double xDir = movingVector.getX();
+    double yDir = movingVector.getY();
     boolean changeDirection = false;
-    if (environment.isOnWidthEdge(simObj)) {
+    Position nextPosition = simObj.getNextPosition();
+    int size = simObj.getSize();
+    if (environment.isOutOfWidth(nextPosition, size)) {
       xDir *= -1;
       changeDirection = true;
     }
-    if (environment.isOnHeightEdge(simObj)) {
+    if (environment.isOutOfHeight(nextPosition, size)) {
       yDir *= -1;
       changeDirection = true;
     }
@@ -40,7 +43,7 @@ public class EdgeTestingMovingStrategy implements MovingStrategy {
 
   private void changePosition(SimObj simObj) {
     Position oldPos = simObj.getPosition();
-    Position afterCalculated = oldPos.add(simObj.getDirection());
+    Position afterCalculated = oldPos.add(simObj.getMovingVector());
     Position limitedPosition = environment.limitedPosition(afterCalculated, simObj.getSize());
     simObj.setPosition(limitedPosition);
   }

@@ -1,5 +1,7 @@
 package com.dt.evosim.simulation;
 
+import java.util.function.Function;
+
 import com.dt.evosim.domain.SimObj;
 import com.dt.physics.common.Position;
 
@@ -17,14 +19,24 @@ public class Environment {
     this.maxHeight = maxHeight;
   }
 
-  public boolean isOnWidthEdge(SimObj simObj) {
-    Position pos = simObj.getPosition();
+  public boolean isOutOfWidth(Position position, int size) {
+    return position.getX() - size < minWidth || position.getX() + size + 1 > maxWidth;
+  }
+
+  public boolean isOutOfHeight(Position position, int size) {
+    return position.getY() - size < minHeight || position.getY() + size + 1 > maxHeight;
+  }
+
+  public boolean isOnWidthEdge(SimObj simObj, Function<SimObj, Position> positionSupplier) {
+    int speed = (int) simObj.getSpeed();
+    Position pos = positionSupplier.apply(simObj);
     boolean r = pos.getX() - simObj.getSize() <= minWidth || maxWidth <= pos.getX() + simObj.getSize();
     return r;
   }
 
-  public boolean isOnHeightEdge(SimObj simObj) {
-    Position pos = simObj.getPosition();
+  public boolean isOnHeightEdge(SimObj simObj, Function<SimObj, Position> positionSupplier) {
+    int speed = (int) simObj.getSpeed();
+    Position pos = positionSupplier.apply(simObj);
     boolean r = pos.getY() - simObj.getSize() <= minHeight || maxHeight <= pos.getY() + simObj.getSize();
     return r;
   }

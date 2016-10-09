@@ -17,7 +17,7 @@ public class SimObj implements Serializable {
   private Position position;
   private Vector direction;
   private AtomicInteger age = new AtomicInteger(0);
-  private double speed = 0.0d;
+  private double speed = 1.0d;
   private int energy = 100;
   private boolean living = true;
   private int size;
@@ -81,6 +81,10 @@ public class SimObj implements Serializable {
     this.position = position;
   }
 
+  public Vector getMovingVector() {
+    return direction.getNormalizedVectorToScalar(speed).round();
+  }
+
   public Vector getDirection() {
     return direction;
   }
@@ -106,11 +110,17 @@ public class SimObj implements Serializable {
   }
 
   public double distTo(SimObj otherObj) {
-    return otherObj.getPosition().getVectorTo(this.getPosition()).getScalar();
+    return otherObj.getPosition().getVectorTo(this.getPosition()).getScalar() - 1;
   }
 
   public boolean isCollidingWith(SimObj otherObj) {
-    return distTo(otherObj) <= this.getSize() + otherObj.getSize();
+    boolean bb = distTo(otherObj) <= this.getSize() + otherObj.getSize();
+    return bb;
+  }
+
+  public Position getNextPosition() {
+    Vector rounded = getDirection().getNormalizedVectorToScalar(speed).round();
+    return position.add(rounded);
   }
 
   public Map<String, Double> getMyProperties() {

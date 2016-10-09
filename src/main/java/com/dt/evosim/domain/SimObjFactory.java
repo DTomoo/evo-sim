@@ -21,7 +21,7 @@ public class SimObjFactory {
   }
 
   public SimObj randomObject(int id) {
-    int size = 5;
+    int size = 20;
     Position pos = getRandomPosition(size);
     Vector dir = getRandomDirection();
     Map<String, Double> myProperties = createRandomFields(1);
@@ -48,11 +48,13 @@ public class SimObjFactory {
 
   private Position getRandomPosition(int size) {
     return new Position(
-        rnd.getRandomIntInClosedRange(environment.getMinWidth() + size, environment.getMaxWidth() - size),
-        rnd.getRandomIntInClosedRange(environment.getMinHeight() + size, environment.getMaxHeight() - size));
+        rnd.getRandomIntInClosedRange(environment.getMinWidth() + size, environment.getMaxWidth() - size - 1),
+        rnd.getRandomIntInClosedRange(environment.getMinHeight() + size, environment.getMaxHeight() - size - 1));
+    // return new Position(20,20);
   }
 
   private Vector getRandomDirection() {
     return new Vector(rnd.getRandomIntInClosedRange(-5, 5), rnd.getRandomIntInClosedRange(-5, 5));
+    // return new Vector(2, 0);
   }
 }

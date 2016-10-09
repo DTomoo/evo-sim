@@ -24,7 +24,6 @@ public class SimObjFactoryTest {
     // THEN
     Assert.assertNotNull(simObj);
     Assert.assertEquals(0, simObj.getAge());
-    Assert.assertEquals(0d, simObj.getSpeed(), 0.00001d);
     Assert.assertNotNull(simObj.getPosition());
   }
 
